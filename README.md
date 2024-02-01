@@ -1,8 +1,14 @@
 # Design Automation for Organs-on-a-chip
 
-A design automation method for organs-on-chip developed by the [Chair for Design Automation](https://www.cda.cit.tum.de/) at the [Technical University of Munich](https://www.tum.de/) as part of the Munich MicroFluidic Toolkit (MMFT). This method includes the orchestration of several aspects like the size of organ modules, the required shear stress on membranes, the dimensiones and geometry of channels, pump pressures, etc., and by this improves the design task for organs-on-chip. More details about the implementation can be found in:
+<p align="center">
+  <picture>
+    <img src="https://www.cda.cit.tum.de/research/microfluidics/logo-microfluidics-toolkit.png" width="60%">
+  </picture>
+</p>
 
-M. Emmerich, P. Ebner, and R. Wille. Design Automation for Organs-on-Chip. In Design, Automation and Test in Europe (DATE). 2024. 
+An initial design automation method for organs-on-chip developed by the [Chair for Design Automation](https://www.cda.cit.tum.de/) at the [Technical University of Munich](https://www.tum.de/) as part of the Munich MicroFluidic Toolkit (MMFT). The method considers the orchestration of several aspects, like the size of organ modules, the required shear stress on membranes, the dimensions and geometry of channels, pump pressures, etc., and uses that to generate an initial design of the desired device. More details about the implementation can be found in:
+
+[M. Emmerich, P. Ebner, and R. Wille. Design Automation for Organs-on-Chip. In Design, Automation and Test in Europe (DATE). 2024.](https://www.cda.cit.tum.de/files/eda/2024_date_design_automation_for_organs-on-chip.pdf)
 
 For more information about our work on Microfluidics, please visit https://www.cda.cit.tum.de/research/microfluidics/.
 

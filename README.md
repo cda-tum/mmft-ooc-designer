@@ -20,10 +20,10 @@ Tested with Python 3.9.14.
 ## Run
 To run the script via the command line type:
 ```bash
-    python ooc-da.py inputfile.json outputfile.json
+    python ooc_da.py inputfile.json outputfile.json
 ```
 
 ### Example
 ```bash
-    python ooc-da.py architectures/ooc_male_simple.json outputconfig.json
+    python ooc_da.py architectures/ooc_male_simple.json outputconfig.json
 ```

@@ -8,7 +8,7 @@ def run(outputpath):
   inputdir = 'architectures'
 
   # change these values to create different case dirs
-  inputfiles = ['ooc_generic6']
+  inputfiles = ['male_simple']
   variations = {
     'spacing': [0.5e-3,1.5e-3],
     'viscosity': [9.3e-4, 1.1e-3, 3e-3],

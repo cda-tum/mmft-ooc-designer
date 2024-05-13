@@ -1,0 +1,56 @@
+{
+    "id": "ooc_male_simple",
+    "viscosity": 0.00072,
+    "density": 997,
+    "channel_height": 0.00015,
+    "shear": 1.5,
+    "module_width": 0.001,
+    "spacing": 0.001,
+    "radius": 0.0002,
+    "pump_stubs_length": 0.002,
+    "refeed_stubs_relative_length": 0.3,
+    "refeed_extra_offset": 0.002,
+    "discharge_extra_offset": 0.002,
+    "module_before_after_extra_offset": 0.001,
+    "reference": {
+        "standard_human_mass": 70,
+        "cell_layer_thickness": 7.5e-06,
+        "number_of_layers": 2,
+        "layered_tissue_width": 0.001,
+        "real_layered_tissue_volume": 0.00117,
+        "real_layered_tissue_mass": 1,
+        "real_round_tissue_volume": 0.00145,
+        "real_round_tissue_mass": 1.4,
+        "round_tissue_radius": 0.00025
+    },
+    "modules": [
+        {
+            "id": "lung_1",
+            "type": "layered_tissue",
+            "real_volume": 0.00117,
+            "real_mass": 1,
+            "number_of_layers": 2,
+            "cell_layer_thickness": 7.5e-06,
+            "perfusion_rate": 0.36,
+            "comment": "blood perfusion_rate 1000 chosen arbitrary, blood flow 5600"
+        },
+        {
+            "id": "brain_1",
+            "type": "round_tissue",
+            "real_volume": 0.00145,
+            "real_mass": 1.4,
+            "perfusion_rate": 0.25,
+            "comment": "blood perfusion_rate 700, blood flow 5600"
+        },
+        {
+            "id": "liver_1",
+            "type": "layered_tissue",
+            "real_volume": 0.00169,
+            "real_mass": 1.8,
+            "number_of_layers": 20,
+            "cell_layer_thickness": 7.5e-06,
+            "perfusion_rate": 0.51,
+            "comments": "blood perfusion_rate 1450, Christensen 2021, thickness of 150 um, blood flow 5600"
+        }
+    ]
+}

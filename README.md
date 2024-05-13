@@ -9,13 +9,9 @@
 
 A design automation tool for multi-organs-on-chip developed by the [Chair for Design Automation](https://www.cda.cit.tum.de/) at the [Technical University of Munich](https://www.tum.de/) as part of the [Munich MicroFluidic Toolkit (MMFT)](https://www.cda.cit.tum.de/research/microfluidics/munich-microfluidics-toolkit/). The method considers the orchestration of several aspects, like the size of organ modules, the required shear stress on membranes, the dimensions and geometry of channels, pump pressures, etc., and uses that to generate an initial design, that can then be translated to a 2D network as well as extruded and exported as a 3D geometry of the microfluidic channel network for subsequent simulations or the desired device including the chip specifications for fabrication.
 
-<p align="center">
-  <a href="https://mmft-ooc-designer.readthedocs.io/en/latest/">
-  <img width=30% src="https://img.shields.io/badge/documentation-blue?style=for-the-badge&logo=read%20the%20docs" alt="Documentation" />
-  </a>
-</p>
 
-A detailed user guide is available through the included Jupyter Notebook and templates can be found in the architectures directory.
+A detailed [user guide](https://github.com/cda-tum/mmft-ooc-designer/blob/GeometryAndMeanderExt/docs/Tutorial.ipynb) is available through the included Jupyter Notebook and templates can be found in the architectures directory.
+
 
 More details about the implementation can be found in:
 

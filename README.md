@@ -19,6 +19,12 @@ M. Emmerich, P. Ebner, and R. Wille. [Design Automation for Organs-on-Chip](http
 
 M. Emmerich, P. Ebner, and R. Wille. Automated Design for Microfluidic Channel Networks in Multi-Organs-on-Chip. Under review.
 
+<p align="center">
+  <a href="https://mmft-ooc-designer.readthedocs.io/en/latest/">
+  <img width=30% src="https://img.shields.io/badge/documentation-blue?style=for-the-badge&logo=read%20the%20docs" alt="Documentation" />
+  </a>
+</p>
+
 For more information about our work on Microfluidics, please visit https://www.cda.cit.tum.de/research/microfluidics/.
 
 If you have any questions, feel free to contact us via microfluidics.cda@xcit.tum.de or by creating an issue on GitHub.

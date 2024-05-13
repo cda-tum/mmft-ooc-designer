@@ -55,7 +55,7 @@ add_module_names = False
 
 # -- Options for HTML output -------------------------------------------------
 
-html_theme = "furo"
+html_theme = "sphinx_rtd_theme"
 html_static_path = ["_static"]
 html_theme_options = {
     "light_logo": "mmft_light.png",

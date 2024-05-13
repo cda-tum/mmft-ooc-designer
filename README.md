@@ -34,7 +34,7 @@ If you have any questions, feel free to contact us via microfluidics.cda@xcit.tu
 ## System Requirements
 Tested with Python 3.9.14.
 ```bash
-  pip install -r requirements.txt
+  pip install -r docs/requirements.txt
 ```
 
 ## Run

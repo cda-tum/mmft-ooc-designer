@@ -13,19 +13,9 @@ A design automation tool for multi-organs-on-chip developed by the [Chair for De
 
 A detailed [tutorial](https://github.com/cda-tum/mmft-ooc-designer/blob/GeometryAndMeanderExt/Tutorial.ipynb) is available through the included Jupyter Notebook and templates can be found in the architectures directory.
 
-## Implementation Details
-
 More details about the implementation can be found in:
 
 M. Emmerich, P. Ebner, and R. Wille. [Design Automation for Organs-on-Chip](https://www.cda.cit.tum.de/files/eda/2024_date_design_automation_for_organs-on-chip.pdf). In Design, Automation and Test in Europe (DATE). 2024.
-
-M. Emmerich, P. Ebner, and R. Wille. Automated Design for Microfluidic Channel Networks in Multi-Organs-on-Chip. Under review.
-
-<p align="center">
-  <a href="https://mmft-ooc-designer.readthedocs.io/en/latest/">
-  <img width=30% src="https://img.shields.io/badge/documentation-blue?style=for-the-badge&logo=read%20the%20docs" alt="Documentation" />
-  </a>
-</p>
 
 For more information about our work on Microfluidics, please visit https://www.cda.cit.tum.de/research/microfluidics/.
 

@@ -7,7 +7,7 @@
   </picture>
 </p>
 
-A design automation tool for multi-organs-on-chip developed by the [Chair for Design Automation](https://www.cda.cit.tum.de/) at the [Technical University of Munich](https://www.tum.de/) as part of the [Munich MicroFluidic Toolkit (MMFT)](https://www.cda.cit.tum.de/research/microfluidics/munich-microfluidics-toolkit/). The method considers the orchestration of several aspects, like the size of organ modules, the required shear stress on membranes, the dimensions and geometry of channels, pump pressures, etc., and uses that to generate an initial design, that can then be translated to a 2D network as well as extruded and exported as a 3D geometry of the microfluidic channel network for subsequent simulations or the desired device including the chip specifications for fabrication.
+A design automation tool for multi-organs-on-chip developed by the [Chair for Design Automation](https://www.cda.cit.tum.de/) at the [Technical University of Munich](https://www.tum.de/) as part of the [Munich MicroFluidic Toolkit (MMFT)](https://www.cda.cit.tum.de/research/microfluidics/munich-microfluidics-toolkit/). The method considers the orchestration of several aspects, like the size of organ modules, the required shear stress on membranes, the dimensions and geometry of channels, pump pressures, etc., and uses that to generate an initial design. This can then be translated to a 2D network as well as extruded and exported as a 3D geometry of the microfluidic channel network for subsequent simulations or the desired device including the chip specifications for fabrication.
 
 ## Tutorial
 

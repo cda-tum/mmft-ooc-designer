@@ -28,6 +28,7 @@ def solve(input):
   channel_height = input['channel_height']
   viscosity = input['viscosity']
   spacing = input['spacing']
+  radius = input['radius']
 
   result = dict(input)
   result['modules'] = list(map(lambda m: dict(m), input['modules']))
@@ -78,7 +79,7 @@ def solve(input):
   pre_default_length = 0.5 * supply_default_width + spacing + input['module_before_after_extra_offset']
   post_default_length = 0.5 * discharge_default_width + spacing + input['module_before_after_extra_offset']
 
-  connection_default_width = 0.5*max_module_width
+  connection_default_width = 0.5 * max_module_width
   connection_default_length = 0.5 * supply_default_width + spacing + 0.5 * discharge_default_width
 
   supply_carry_default_width = max_module_width
@@ -190,7 +191,7 @@ def solve(input):
         'flowrate': module['channels']['c_discharge']['flowrate'] + next_module['channels']['c_discharge_carry']['flowrate'],
         'width': discharge_carry_default_width,
         'height': channel_height,
-        'length': connection_default_length + pre_default_length + c_main_length + post_default_length  + input['refeed_extra_offset'] + input['discharge_extra_offset'],
+        'length': connection_default_length + pre_default_length + c_main_length + post_default_length  + input['refeed_extra_offset'] + input['discharge_extra_offset'], 
       }
     else:
       module['channels']['c_discharge_carry'] = {
@@ -526,21 +527,21 @@ def recompute_meanders(result):
   recompute_supply_meanders(result)
   recompute_discharge_meanders(result)
 
-def recompute_supply_meander_bend_length(module, i, previous_module, spacing):
+def recompute_supply_meander_bend_length(module, i, previous_module, spacing, radius):
   # the length of a meander bend, computed by spacing, and dimensions of the surrounding channels
   if i != 0:
-    module['channels']['c_supply']['meander_bend_length'] = previous_module['channels']['c_pre']['length'] + previous_module['channels']['c_main']['length'] + previous_module['channels']['c_post']['length'] + module['channels']['c_connection']['length'] - 0.5 * previous_module['channels']['c_supply']['width'] - 0.5 * module['channels']['c_supply']['width'] - spacing
+    module['channels']['c_supply']['meander_bend_length'] = previous_module['channels']['c_pre']['length'] + previous_module['channels']['c_main']['length'] + previous_module['channels']['c_post']['length'] + module['channels']['c_connection']['length'] - 0.5 * previous_module['channels']['c_supply']['width'] - 0.5 * module['channels']['c_supply']['width'] - spacing + (2 * math.pi - 8) * radius
   else:
-    module['channels']['c_supply']['meander_bend_length'] = module['channels']['c_connection']['length'] - 0.5 * module['channels']['c_supply']['width']
+    module['channels']['c_supply']['meander_bend_length'] = module['channels']['c_connection']['length'] - 0.5 * module['channels']['c_supply']['width'] + (2 * math.pi - 8) * radius
 
-def recompute_discharge_meander_bend_length(module, i, previous_module, spacing):
+def recompute_discharge_meander_bend_length(module, i, previous_module, spacing, radius): 
   # analogous
   if i != 0:
-    module['channels']['c_discharge']['meander_bend_length'] = module['channels']['c_pre']['length'] + module['channels']['c_main']['length'] + module['channels']['c_post']['length'] + module['channels']['c_connection']['length'] - 0.5 * previous_module['channels']['c_discharge']['width'] - 0.5 * module['channels']['c_discharge']['width'] - spacing
+    module['channels']['c_discharge']['meander_bend_length'] = module['channels']['c_pre']['length'] + module['channels']['c_main']['length'] + module['channels']['c_post']['length'] + module['channels']['c_connection']['length'] - 0.5 * previous_module['channels']['c_discharge']['width'] - 0.5 * module['channels']['c_discharge']['width'] - spacing + (2 * math.pi - 8) * radius
   else:
-    module['channels']['c_discharge']['meander_bend_length'] = module['channels']['c_pre']['length'] + module['channels']['c_main']['length'] + module['channels']['c_post']['length'] - 0.5 * module['channels']['c_discharge']['width'] - spacing
+    module['channels']['c_discharge']['meander_bend_length'] = module['channels']['c_pre']['length'] + module['channels']['c_main']['length'] + module['channels']['c_post']['length'] - 0.5 * module['channels']['c_discharge']['width'] - spacing + (2 * math.pi - 8) * radius
 
-def meander_bends(offset, upper_half_width, lower_half_width, spacing, width):
+def meander_bends(offset, upper_half_width, lower_half_width, spacing, width): # defines height (rounding has no impact)
   return math.floor((offset - 0.5 * lower_half_width - 0.5 * upper_half_width - spacing) / (2 * spacing + 2 * width))
 
 def recompute_supply_meanders(result):
@@ -556,8 +557,8 @@ def recompute_supply_meanders(result):
 
     supply = module['channels']['c_supply']
     supply['meander_bends'] = meander_bends(result['supply_offset'], module['channels']['c_main']['width'], module['channels']['c_supply_carry']['width'], result['spacing'], supply['width'])
-    recompute_supply_meander_bend_length(module, i, previous_module, result['spacing'])
-    supply['max_length'] = result['supply_offset'] + 2 * supply['meander_bends'] * supply['meander_bend_length']
+    recompute_supply_meander_bend_length(module, i, previous_module, result['spacing'], result['radius'])
+    supply['max_length'] = result['supply_offset'] + 2 * supply['meander_bends'] * supply['meander_bend_length'] 
 
 def recompute_discharge_meanders(result):
   # analogous
@@ -570,8 +571,8 @@ def recompute_discharge_meanders(result):
 
     discharge = module['channels']['c_discharge']
     discharge['meander_bends'] = meander_bends(result['discharge_offset'], module['channels']['c_main']['width'], module['channels']['c_discharge_carry']['width'], result['spacing'], discharge['width'])
-    recompute_discharge_meander_bend_length(module, i, previous_module, result['spacing'])
-    discharge['max_length'] = result['discharge_offset'] + 2 * discharge['meander_bends'] * discharge['meander_bend_length']
+    recompute_discharge_meander_bend_length(module, i, previous_module, result['spacing'], result['radius'])
+    discharge['max_length'] = result['discharge_offset'] + 2 * discharge['meander_bends'] * discharge['meander_bend_length'] 
 
 def compute_all_meander_vias(result):
   # computes intermediate points of meanders
@@ -580,6 +581,8 @@ def compute_all_meander_vias(result):
     module = result['modules'][i]
     compute_meander_vias(result, module, module['channels']['c_supply'], abs(result['supply_offset']), module['channels']['c_supply_carry']['width'], True)
     compute_meander_vias(result, module, module['channels']['c_discharge'], result['discharge_offset'], module['channels']['c_discharge_carry']['width'], False)
+    compute_rounded_meander_vias(result, module['channels']['c_supply'], True)
+    compute_rounded_meander_vias(result, module['channels']['c_discharge'], False)
 
 def compute_meander_vias(result, module, channel, offset, upper_half_width, up):
   eps = 1e-6
@@ -587,7 +590,7 @@ def compute_meander_vias(result, module, channel, offset, upper_half_width, up):
   spacing = result['spacing']
   meander_bends = channel['meander_bends']
   required_length = channel['length']
-  meander_length = required_length - offset
+  meander_length = (required_length) - (offset) # + (meander_bends * (2 * math.pi - 8) * result['radius'])) # how long the channel would be without rounded edges
   if meander_bends <= 0:
     channel['vias'] = []
     return
@@ -606,10 +609,11 @@ def compute_meander_vias(result, module, channel, offset, upper_half_width, up):
   # therefore, if the meander is only a little bit longer than a straight channel, distribute extra length among meander bends differently
   # this may lead to slightly off lengths if the meander has only a few bends
   if actual_bend_length <= 2*channel['width']:
-    target_length = required_length - offset
+    target_length = required_length - (offset) # + (meander_bends * (2 * math.pi - 8) * result['radius']))
     current = 0
     i = 0
     while current < target_length:
+      print('current: {}, target: {}'.format(current, target_length))
       current += 4*channel['width']
       vias.append([x, y_offset + (-1 if up else 1) * (bend_height * i + 0.5 * spacing + 0.5 * channel['width'])])
       vias.append([x - 2*channel['width'], y_offset + (-1 if up else 1) * (bend_height * i + 0.5 * spacing + 0.5 * channel['width'])])
@@ -627,11 +631,38 @@ def compute_meander_vias(result, module, channel, offset, upper_half_width, up):
 
   channel['vias'] = vias
 
+def compute_rounded_meander_vias(result, channel, up):
+  rounded_vias = []
+  radius = result['radius']
+  i = 0
+  vias = channel['vias']
+  if up:
+    while i in range(len(vias)): # supply, [startpoint, midpoint]
+      rounded_vias.append([[vias[i][0], vias[i][1] + radius],[vias[i][0] - radius, vias[i][1] + radius], [vias[i][0] - radius, vias[i][1]], [-90]])
+      i+=1
+      rounded_vias.append([[vias[i][0] + radius, vias[i][1]],[vias[i][0] + radius, vias[i][1] - radius], [vias[i][0], vias[i][1] - radius], [90]])
+      i+=1
+      rounded_vias.append([[vias[i][0], vias[i][1] + radius],[vias[i][0] + radius, vias[i][1] + radius], [vias[i][0] + radius, vias[i][1]], [90]])
+      i+=1
+      rounded_vias.append([[vias[i][0] - radius, vias[i][1]],[vias[i][0] - radius, vias[i][1] - radius], [vias[i][0], vias[i][1] - radius], [-90]])
+      i+=1
+  else:
+    while i in range(len(vias)): # discharge, [startpoint, midpoint]
+      rounded_vias.append([[vias[i][0], vias[i][1] - radius],[vias[i][0] - radius, vias[i][1] - radius], [vias[i][0] - radius, vias[i][1]], [90]])
+      i+=1
+      rounded_vias.append([[vias[i][0] + radius, vias[i][1]],[vias[i][0] + radius, vias[i][1] + radius], [vias[i][0], vias[i][1] + radius], [-90]])
+      i+=1
+      rounded_vias.append([[vias[i][0], vias[i][1] - radius],[vias[i][0] + radius, vias[i][1] - radius], [vias[i][0] + radius, vias[i][1]], [-90]])
+      i+=1
+      rounded_vias.append([[vias[i][0] - radius, vias[i][1]],[vias[i][0] - radius, vias[i][1] + radius], [vias[i][0], vias[i][1] + radius], [90]])
+      i+=1
+  channel['rounded_vias'] = rounded_vias
+
 def compute_module_offsets(result):
   # some post processing
   # during computation, supply_offset is a positive value for technical reasons; now change it to negative so it can be used as a coordinate
   result['supply_offset'] = -result['supply_offset']
-  result['refeed_stubs_length'] = result['discharge_offset'] * result['refeed_stubs_relative_length']
+  result['refeed_stubs_length'] = result['discharge_offset'] * result['refeed_stubs_relative_length'] 
   result['total_channel_length'] = compute_total_channel_length(result)
   n_modules = len(result['modules'])
   for i in range(n_modules):
@@ -663,7 +694,7 @@ def compute_total_channel_length(result):
     total += module['channels']['c_discharge_carry']['length']
   return total
 
-def compute_via_length(channel, start, end):
+def compute_via_length(channel, start, end): 
   # computed actual via length to validate meanders against desired lengths (if necessary)
   total = 0
   previous = start

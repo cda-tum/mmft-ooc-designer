@@ -1,0 +1,6 @@
+# Packages required for the mmft-ooc-designer project
+
+ipython==8.22.1
+ipywidgets==8.1.2
+pyvista==0.42.3
+numpy-stl==3.1.1

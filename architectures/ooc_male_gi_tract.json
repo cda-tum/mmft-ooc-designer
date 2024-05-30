@@ -6,6 +6,7 @@
     "shear": 15e-1,
     "module_width": 1e-3,
     "spacing": 1e-3,
+    "radius": 0.2e-3,
     "pump_stubs_length": 2e-3,
     "refeed_stubs_relative_length": 0.3,
     "refeed_extra_offset": 2e-3,

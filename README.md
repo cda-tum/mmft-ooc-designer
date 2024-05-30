@@ -11,7 +11,7 @@ A design automation tool for multi-organs-on-chip developed by the [Chair for De
 
 ## Tutorial
 
-A detailed [tutorial](https://github.com/cda-tum/mmft-ooc-designer/blob/GeometryAndMeanderExt/Tutorial.ipynb) is available through the included Jupyter Notebook and templates can be found in the architectures directory.
+A detailed [tutorial](https://github.com/cda-tum/mmft-ooc-designer/Tutorial.ipynb) is available through the included Jupyter Notebook and templates can be found in the architectures directory.
 
 More details about the implementation can be found in:
 

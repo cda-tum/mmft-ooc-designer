@@ -1370,16 +1370,16 @@ def create_svg_network_2D(vertices, nodes, quad_list, channel_faces, arcs, filen
 
 
 if __name__ == "__main__":
-    output_file = '../tests/output.stl'
-    filename = '../tests/config_male_all.json'
-    output_file = '../tests/stl_output.stl'
+    filename = 'outputconfig.json' #adapt this to the path of the previously created json file
+    output_file = 'stl_output.stl'
     nodes, pumps, channels, arcs, height, organ_channels = read_in_network_file(filename)
 
     channel_negative = True
-    bottom = 0.5e-3
-    top = 0.5e-3
-    sides = 0.5e-3
-    pump_radius = 0.03e-1
+    # Adapt the following values to fit your chip
+    bottom = 0.5
+    top = 0.5
+    sides = 0.7
+    pump_radius = 0.2
 
     # UNCOMMENT THE FOLLOWING LINE TO SHOW THE NODES AND CHANNELS IN THE XY PLANE
     plot_nodes(nodes, channels)

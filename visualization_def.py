@@ -168,16 +168,20 @@ def display_chip_size_widgets():
     # Initial Global Variable Definitions
     global bottom, top, sides, pump_radius
 
-    bottom = 300e-6 * 2
-    top = 300e-6 * 2
-    sides = 300e-6 * 5
-    pump_radius = 300e-6 * 2
+    bottom = 300e-3 * 2
+    top = 300e-3 * 2
+    sides = 300e-3 * 5
+    pump_radius = 300e-3 * 2
 
     # Define widgets for the parameters
-    bottom_widget = widgets.FloatText(value=300e-6 * 2, description='Bottom [m]:', step=1e-6, style={'description_width': 'initial'})
-    top_widget = widgets.FloatText(value=300e-6 * 2, description='Top [m]:', step=1e-6, style={'description_width': 'initial'})
-    sides_widget = widgets.FloatText(value=300e-6 * 5, description='Sides [m]:', step=1e-6, style={'description_width': 'initial'})
-    pump_radius_widget = widgets.FloatText(value=300e-6 * 2, description='Pump Tubing Radius [m]:', step=1e-6, style={'description_width': 'initial'})
+    bottom_widget = widgets.FloatText(value=300e-6 * 2, description='Bottom [m]:', step=1e-6, style={'description_width': 'initial'},
+    layout=widgets.Layout(width='300px'))
+    top_widget = widgets.FloatText(value=300e-6 * 2, description='Top [m]:', step=1e-6, style={'description_width': 'initial'},
+    layout=widgets.Layout(width='300px'))
+    sides_widget = widgets.FloatText(value=300e-6 * 5, description='Sides [m]:', step=1e-6, style={'description_width': 'initial'},
+    layout=widgets.Layout(width='300px'))
+    pump_radius_widget = widgets.FloatText(value=300e-6 * 2, description='Pump Tubing Radius [m]:', step=1e-6, style={'description_width': 'initial'},
+    layout=widgets.Layout(width='300px'))
 
     def update_settings(*args):
         global bottom, top, sides, pump_radius
@@ -198,6 +202,9 @@ def display_chip_size_widgets():
 
     display(bottom_widget, top_widget, sides_widget, pump_radius_widget)
 
+def get_chip_dimensions():
+    return bottom, top, sides, pump_radius
+
 
 def display_bool_widgets():
     # Initial Global Variable Definitions
@@ -208,54 +215,45 @@ def display_bool_widgets():
     unit_conversion_to_mm = True
 
     # Define bool widgets
-    channel_negative_widget_input = widgets.Checkbox(
-        value=True,  # Default checked
+    channel_negative_widget = widgets.Checkbox(
+        value=channel_negative,  # Default checked
         description='Channel Negative',
         disabled=False,
-        style={'description_width': 'initial'}
-    )
-    channel_negative_widget_output = widgets.Checkbox(
-        value=channel_negative,  # Bind value to global variable
-        description='Channel Negative',
-        disabled=True,  # Disabled for output
         style={'description_width': 'initial'}
     )
 
-    unit_conversion_to_mm_widget_input = widgets.Checkbox(
-        value=True,  # Default checked
+    unit_conversion_to_mm_widget = widgets.Checkbox(
+        value=unit_conversion_to_mm,  # Default checked
         description='Unit Conversion to mm',
         disabled=False,
         style={'description_width': 'initial'}
     )
-    unit_conversion_to_mm_widget_output = widgets.Checkbox(
-        value=unit_conversion_to_mm,  # Bind value to global variable
-        description='Unit Conversion to mm',
-        disabled=True,  # Disabled for output
-        style={'description_width': 'initial'}
-    )
+
+    output = widgets.Output()
 
     def update_settings(*args):
         global channel_negative, unit_conversion_to_mm
 
-        channel_negative = channel_negative_widget_input.value
-        unit_conversion_to_mm = unit_conversion_to_mm_widget_input.value
+        channel_negative = channel_negative_widget.value
+        unit_conversion_to_mm = unit_conversion_to_mm_widget.value
 
         print("Variables updated")  # Debugging: Confirm updates
 
-        # Update output widgets with new values
-        channel_negative_widget_output.value = channel_negative
-        unit_conversion_to_mm_widget_output.value = unit_conversion_to_mm
-
     # Attach observers to the respective input widgets
-    channel_negative_widget_input.observe(update_settings, names='value')
-    unit_conversion_to_mm_widget_input.observe(update_settings, names='value')
+    channel_negative_widget.observe(update_settings, names='value')
+    unit_conversion_to_mm_widget.observe(update_settings, names='value')
 
     # Display input widgets for input
-    display(channel_negative_widget_input, unit_conversion_to_mm_widget_input)
+    display(channel_negative_widget, unit_conversion_to_mm_widget)
 
-    # Display output widgets (read-only) for output
-    display(channel_negative_widget_output, unit_conversion_to_mm_widget_output)
 
+def get_channel_negative():
+    """Function to return the current value of channel_negative."""
+    return channel_negative
+
+def get_unit_conversion_to_mm():
+    """Function to return the current value of unit_conversion_to_mm."""
+    return unit_conversion_to_mm
 
 def convert_to_floats(data):
     if isinstance(data, dict):
@@ -285,11 +283,9 @@ def display_3D_mesh(stl_file):
     # Suppress warnings
     warnings.filterwarnings('ignore')
 
-
     # Load the STL file
     mesh = pv.read(stl_file)
     mesh.rotate_z(90)
-
 
     # Plot the mesh with internal edges visible
     plotter = pv.Plotter()

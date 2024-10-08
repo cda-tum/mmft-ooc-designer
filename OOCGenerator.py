@@ -423,7 +423,7 @@ def discretize_arc_xz(start, center, end, direction, num_segments): # TODO combi
         
     return arc_points
 
-def create_arc_triangles_side(arc_points, height): # TODO define direction as well ie z, y or x
+def create_arc_triangles_side(arc_points, height, inner_arc): # TODO define direction as well ie z, y or x
     """
     Create triangles for the channel sides defined by arc points and height. (extrusion of a 1D arc in z-direction)
     """
@@ -443,8 +443,12 @@ def create_arc_triangles_side(arc_points, height): # TODO define direction as we
         p2_top = p2.copy()
         p2_top[2] += height
 
-        triangles.append([tuple(p1), tuple(p2), tuple(p1_top)])
-        triangles.append([tuple(p1_top), tuple(p2_top), tuple(p2)])
+        if inner_arc:
+            triangles.append([tuple(p2), tuple(p1), tuple(p1_top)])
+            triangles.append([tuple(p1_top), tuple(p2_top), tuple(p2)])
+        else:
+            triangles.append([tuple(p1), tuple(p2), tuple(p1_top)])
+            triangles.append([tuple(p1_top), tuple(p2), tuple(p2_top)])
 
     return triangles
 
@@ -497,7 +501,7 @@ def create_arc_triangles_xy(arc_points, arc_points2, height):
             continue
 
         triangles.append([tuple(p1A), tuple(p2A), tuple(p1B)])
-        triangles.append([tuple(p1B), tuple(p2B), tuple(p2A)])
+        triangles.append([tuple(p1B), tuple(p2A), tuple(p2B)])
 
         # Analogous for the top/bottom triangles +z
         p1A_top = p1A.copy()
@@ -510,7 +514,7 @@ def create_arc_triangles_xy(arc_points, arc_points2, height):
         p2B_top[2] += height
 
         triangles.append([tuple(p1A_top), tuple(p2A_top), tuple(p1B_top)])
-        triangles.append([tuple(p1B_top), tuple(p2B_top), tuple(p2A_top)])
+        triangles.append([tuple(p1B_top), tuple(p2A_top), tuple(p2B_top)])
 
     return triangles
 
@@ -610,6 +614,8 @@ def define_arcs(nodes, quad_list, vertices, arcs, numSegments, channel_height):
     arc_triangles = []
     height = channel_height
 
+    inner_arc = True
+
     for arc in arcs:
         arc[1] = arc[1] + [nodes[arc[0]][2]]
 
@@ -623,24 +629,40 @@ def define_arcs(nodes, quad_list, vertices, arcs, numSegments, channel_height):
                     start2 = quad_1[2]
                     end1 = quad_2[3]
                     end2 = quad_2[0]
+                    # end1 = quad_1[3]
+                    # end2 = quad_1[2]
+                    # start1 = quad_2[3]
+                    # start2 = quad_2[0]
+                    inner_arc = False
                 elif arc[1][0] == nodes[arc[0]][0]: # arc center is in +y direction
-                    start1 = quad_1[1]
-                    start2 = quad_1[2]
-                    end1 = quad_2[1]
-                    end2 = quad_2[0]
+                    # start1 = quad_1[1]
+                    # start2 = quad_1[2]
+                    # end1 = quad_2[1]
+                    # end2 = quad_2[0]
+                    end1 = quad_1[1]
+                    end2 = quad_1[2]
+                    start1 = quad_2[1]
+                    start2 = quad_2[0]
+                    inner_arc = False
                 else:
                     print("Error: arc1", arc) 
             elif nodes[arc[0]][1] > nodes[arc[2]][1]: # arc goes in - y direction
                 if arc[1][1] == nodes[arc[0]][1]:
-                    start1 = quad_1[0]
-                    start2 = quad_1[1]
-                    end1 = quad_2[0]
-                    end2 = quad_2[3]
+                    # start1 = quad_1[0]
+                    # start2 = quad_1[1]
+                    # end1 = quad_2[0]
+                    # end2 = quad_2[3]
+                    end1 = quad_1[0] # TODO something ist wrong here
+                    end2 = quad_1[1]
+                    start1 = quad_2[0]
+                    start2 = quad_2[3]
+                    inner_arc = False
                 elif arc[1][0] == nodes[arc[0]][0]: # arc center is in -y direction
                     start1 = quad_1[2]
                     start2 = quad_1[1]
                     end1 = quad_2[2]
                     end2 = quad_2[3]
+                    inner_arc = False
                 else:
                     print("Error: arc1", arc) 
             else:
@@ -652,6 +674,7 @@ def define_arcs(nodes, quad_list, vertices, arcs, numSegments, channel_height):
                     start2 = quad_1[2]
                     end1 = quad_2[1]
                     end2 = quad_2[2]
+                    inner_arc = False
                 elif arc[1][0] == nodes[arc[0]][0]: # arc center is in +y direction
                     start1 = quad_1[0]
                     start2 = quad_1[3]
@@ -665,11 +688,21 @@ def define_arcs(nodes, quad_list, vertices, arcs, numSegments, channel_height):
                     start2 = quad_1[0]
                     end1 = quad_2[1]
                     end2 = quad_2[2]
+                    # end1 = quad_1[1] 
+                    # end2 = quad_1[0]
+                    # start1 = quad_2[1]
+                    # start2 = quad_2[2]
+                    inner_arc = False
                 elif arc[1][0] == nodes[arc[0]][0]: # arc center is in -y direction
-                    start1 = quad_1[3]
-                    start2 = quad_1[0]
-                    end1 = quad_2[3]
-                    end2 = quad_2[2]
+                    # start1 = quad_1[3]
+                    # start2 = quad_1[0]
+                    # end1 = quad_2[3]
+                    # end2 = quad_2[2]
+                    end1 = quad_1[3] 
+                    end2 = quad_1[0]
+                    start1 = quad_2[3]
+                    start2 = quad_2[2]
+                    inner_arc = False
                 else:
                     print("Error: arc1", arc)    
             else:
@@ -688,16 +721,16 @@ def define_arcs(nodes, quad_list, vertices, arcs, numSegments, channel_height):
 
         if arc[4] == [-90] and start1[1] < end1[1] and start1[0] > end1[0]: 
             direction = np.pi * 2
-        elif arc[4] == [90] and start1[1] > end1[1] and start1[0] < end1[0]:
-            direction = -np.pi * 2
+        elif nodes[arc[0]][0] < nodes[arc[2]][0] and nodes[arc[0]][1] > nodes[arc[2]][1] and arc[1][1] == nodes[arc[0]][1]:
+            direction = np.pi * 2
         else:
             direction = 0
 
         arc_points_1 = discretize_arc(start1, arc[1], end1, direction, numSegments, 0, height) # the height here is only required if the 3D extrusion is equal in +z and -z direction, rather than starting at the bottom
         arc_points_2 = discretize_arc(start2, arc[1], end2, direction, numSegments, 0, height) # the height here is only required if the 3D extrusion is equal in +z and -z direction, rather than starting at the bottom
         arc_triangles_xy = create_arc_triangles_xy(arc_points_2, arc_points_1, height)
-        arc_triangles_side_1 = create_arc_triangles_side(arc_points_1, height)
-        arc_triangles_side_2 = create_arc_triangles_side(arc_points_2, height)
+        arc_triangles_side_1 = create_arc_triangles_side(arc_points_1, height, not inner_arc)
+        arc_triangles_side_2 = create_arc_triangles_side(arc_points_2, height, inner_arc)
         arc_triangles_side = arc_triangles_side_1 + arc_triangles_side_2
         arc_triangles.extend(arc_triangles_xy)
         arc_triangles.extend(arc_triangles_side)
@@ -746,7 +779,7 @@ def define_pump_arcs(height, start, end, direction, numSegments, direction2, pum
 
     
     arc_points = discretize_arc(start_new, center_new, p1, arcDirection, numSegments, pump_radius, 0)
-    arc_triangles_side = create_arc_triangles_side(arc_points, height)
+    arc_triangles_side = create_arc_triangles_side(arc_points, height, inner_arc=True)
 
 
     for i in range(numSegments+1):
@@ -835,10 +868,6 @@ def add_pump_connections(pump_vertices, vertices, direction, numSegments, chip_h
     triangles.extend(triangle)
     top_corner_points.append(corner_point)
     all_arc_points.append(arc_points)
-    
-    # new_direction = direction.copy()
-    # new_direction[0] = - direction[0]
-    # new_direction[1] = - direction[1]
 
     direction2 = direction2 * (-1)
 
@@ -857,7 +886,7 @@ def add_pump_connections(pump_vertices, vertices, direction, numSegments, chip_h
         for i in range(len(all_arc_points[corner])-1):
             connection_triangles.append([all_arc_points[corner][i], all_arc_points[corner][i+1], channel_corner_points[corner]])
 
-    # Define the connecting triangles between the acr point connecting triangles
+    # Define the connecting triangles between the arc point connecting triangles
     connection_triangles.append([all_arc_points[3][0], channel_corner_points[1], channel_corner_points[3]]) 
     connection_triangles.append([all_arc_points[3][-1], channel_corner_points[2], channel_corner_points[3]])
     connection_triangles.append([all_arc_points[0][-1], channel_corner_points[0], channel_corner_points[1]])
@@ -877,10 +906,10 @@ def triangulation(faces, vertices, xy_orientation):
 
         if xy_orientation:
             triangles.append([vertice_0, vertice_1, vertice_2])
-            triangles.append([vertice_0, vertice_3, vertice_2])
+            triangles.append([vertice_0, vertice_2, vertice_3])
         else:
             triangles.append([vertice_0, vertice_1, vertice_3])
-            triangles.append([vertice_0, vertice_2, vertice_3])
+            triangles.append([vertice_0, vertice_3, vertice_2])
         
     return triangles
 
@@ -938,6 +967,13 @@ def add_organ_tank_triangles(organ_block_vertices: list, height: float):
             [tuple(organ_block_vertices[i+2]), tuple(organ_block_vertices[i]), tuple(corner_point0)],
             [tuple(organ_block_vertices[i+2]), tuple(corner_point2), tuple(corner_point0)]
            ])
+        
+        # organ_tank_triangles.extend([ # these are the triangles of the top and bottom face
+        #     [tuple(corner_point0), tuple(corner_point1), tuple(corner_point2)],
+        #     [tuple(corner_point1), tuple(corner_point2), tuple(corner_point3)],
+        #     [tuple(organ_block_vertices[i]), tuple(organ_block_vertices[i+1]), tuple(organ_block_vertices[i+2])],
+        #     [tuple(organ_block_vertices[i+1]), tuple(organ_block_vertices[i+2]), tuple(organ_block_vertices[i+3])]
+        # ])
         
     # Define a circular connection/ tank to input the organ module based on Ronaldson-Bouchard?
 
@@ -1168,6 +1204,7 @@ def create_stl_file(nodes, pumps, channels, arcs, height, bottom, top, sides, pu
         pump_vertices.append([pump_vertice_0, pump_vertice_1, pump_vertice_0_top, pump_vertice_1_top])
     
     pump_vertices = np.array(pump_vertices)
+    print(pump_vertices)
 
     # create_svg_network_1D(nodes, channels, filename='../tests/network1D.svg')
     create_svg_network_2D(vertices, nodes, quad_list, channel_faces_bottom, arcs, filename='output2D.svg')
@@ -1219,7 +1256,7 @@ def create_stl_file(nodes, pumps, channels, arcs, height, bottom, top, sides, pu
         pump_triangles = [] # these are the pumps
         for i in pump_vertices:
             pump_triangles.append([i[0], i[1], i[2]])
-            pump_triangles.append([i[1], i[2], i[3]])
+            pump_triangles.append([i[1], i[3], i[2]])
 
         triangles += pump_triangles
     
@@ -1374,7 +1411,7 @@ if __name__ == "__main__":
     output_file = 'stl_output.stl'
     nodes, pumps, channels, arcs, height, organ_channels = read_in_network_file(filename)
 
-    channel_negative = True
+    channel_negative = False
     # Adapt the following values to fit your chip
     bottom = 0.5
     top = 0.5

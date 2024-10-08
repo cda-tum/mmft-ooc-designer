@@ -1204,7 +1204,6 @@ def create_stl_file(nodes, pumps, channels, arcs, height, bottom, top, sides, pu
         pump_vertices.append([pump_vertice_0, pump_vertice_1, pump_vertice_0_top, pump_vertice_1_top])
     
     pump_vertices = np.array(pump_vertices)
-    print(pump_vertices)
 
     # create_svg_network_1D(nodes, channels, filename='../tests/network1D.svg')
     create_svg_network_2D(vertices, nodes, quad_list, channel_faces_bottom, arcs, filename='output2D.svg')

@@ -16,7 +16,7 @@ A detailed [tutorial](https://github.com/cda-tum/mmft-ooc-designer/blob/main/Tut
 More details about the implementation can be found in:
 
 
-[[1]](10.1109/TCAD.2024.3509795) M. Emmerich, P. Ebner, and R. Wille. [Automated Design for Multi-Organ-on-Chip Geometries](https://www.cda.cit.tum.de/files/eda/2024_tcad_automated_design_for_multi-organ-on-chip_geometries.pdf). In IEEE Transactions on Computer Aided Design of Integrated Circuits and Systems (TCAD), 2024.
+[[1]](https://ieeexplore.ieee.org/document/10771959) M. Emmerich, P. Ebner, and R. Wille. [Automated Design for Multi-Organ-on-Chip Geometries](https://www.cda.cit.tum.de/files/eda/2024_tcad_automated_design_for_multi-organ-on-chip_geometries.pdf). In IEEE Transactions on Computer Aided Design of Integrated Circuits and Systems (TCAD), 2024.
 
 [[2]](https://www.cda.cit.tum.de/files/eda/2024_date_design_automation_for_organs-on-chip.pdf) M. Emmerich, P. Ebner, and R. Wille. [Design Automation for Organs-on-Chip](https://www.cda.cit.tum.de/files/eda/2024_date_design_automation_for_organs-on-chip.pdf). In Design, Automation and Test in Europe (DATE). 2024.
 
